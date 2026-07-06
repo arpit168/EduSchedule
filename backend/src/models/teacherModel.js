@@ -13,15 +13,10 @@ const teacherSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    designation: {
-      type: String,
-      enum: ['Professor', 'Associate Professor', 'Assistant Professor', 'Lecturer', 'Guest Faculty'],
-      default: 'Assistant Professor',
-    },
     department: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Department',
       required: [true, 'Please provide department'],
-      trim: true,
     },
     email: {
       type: String,
@@ -34,43 +29,36 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-    specialization: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
+    qualification: {
+      type: String,
+      default: 'M.Tech / Ph.D',
+    },
+    experience: {
+      type: Number,
+      default: 5, // in years
+    },
+    workingDays: {
+      type: [String],
+      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    },
+    availableTimeSlots: {
+      type: [String],
+      default: ['Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5', 'Period 6', 'Period 7', 'Period 8'],
+    },
+    maxDailyPeriods: {
+      type: Number,
+      default: 4,
+    },
     maxWeeklyPeriods: {
       type: Number,
-      default: 24, // Standard UGC/AICTE max workload
+      default: 20,
     },
-    preferredSlots: [
-      {
-        day: { type: String, enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] },
-        periodNumber: { type: Number },
-      },
-    ],
-    unavailableSlots: [
-      {
-        day: { type: String, enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] },
-        periodNumber: { type: Number },
-        reason: { type: String, default: 'Busy' },
-      },
-    ],
-    isVisiting: {
-      type: Boolean,
-      default: false,
-    },
-    status: {
+    profilePhoto: {
       type: String,
-      enum: ['Active', 'On Leave', 'Inactive'],
-      default: 'Active',
+      default: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     },
-    colorCode: {
-      type: String,
-      default: '#6366F1', // Indigo for timetable UI
-    },
-    userRef: {
+    userAccount: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       default: null,
