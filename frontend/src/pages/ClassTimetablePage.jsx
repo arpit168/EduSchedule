@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../services/api';
-import { GraduationCap, Calendar, Download, Users, Building2, BookOpen } from 'lucide-react';
+import { Download, GraduationCap } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -76,7 +76,7 @@ const ClassTimetablePage = () => {
     if (!timetableData) return;
     const doc = new jsPDF('l', 'mm', 'a4');
     doc.setFontSize(18);
-    doc.text(`Antigravity Timetable OS - Class Weekly Schedule`, 14, 20);
+    doc.text(`Learning Timetable OS - Class Weekly Schedule`, 14, 20);
     doc.setFontSize(12);
     doc.text(`Class: ${selectedClassObj?.className} ${selectedClassObj?.section} | Sem: ${selectedClassObj?.semester} | Batch: ${selectedClassObj?.batch}`, 14, 28);
 
@@ -177,9 +177,8 @@ const ClassTimetablePage = () => {
                   {PERIODS.map((p, idx) => (
                     <th
                       key={idx}
-                      className={`p-3 text-center min-w-[9rem] border-r border-slate-200/60 dark:border-slate-800/60 ${
-                        p === 'LUNCH' ? 'bg-amber-500/10 text-amber-600 min-w-[5rem]' : ''
-                      }`}
+                      className={`p-3 text-center min-w-[9rem] border-r border-slate-200/60 dark:border-slate-800/60 ${p === 'LUNCH' ? 'bg-amber-500/10 text-amber-600 min-w-[5rem]' : ''
+                        }`}
                     >
                       {p === 'LUNCH' ? 'LUNCH' : `Period ${p}`}
                     </th>
@@ -193,7 +192,7 @@ const ClassTimetablePage = () => {
                       {day}
                     </td>
 
-                    {PERIODS.map((p, idx) => {
+                    {PERIODS.map((p) => {
                       if (p === 'LUNCH') {
                         return (
                           <td

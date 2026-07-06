@@ -113,7 +113,7 @@ const useTimetableStore = create((set, get) => ({
         get().saveToUndoStack();
       }
 
-      const res = await api.post('/timetables/swap', {
+      await api.post('/timetables/swap', {
         source,
         target,
         sessionYear: get().sessionYear,

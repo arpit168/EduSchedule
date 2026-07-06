@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useAuthStore from '../store/useAuthStore';
 import api from '../services/api';
-import { User, Mail, Lock, Shield, Check, Camera } from 'lucide-react';
+import { User, Lock, Shield, Check, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {

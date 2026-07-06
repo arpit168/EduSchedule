@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
-import { CalendarDays, Plus, Edit2, Trash2, Search, Download, X, Clock, AlertCircle } from 'lucide-react';
+import { CalendarDays, Plus, Edit2, Trash2, Download, X, Clock } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import toast from 'react-hot-toast';
 
@@ -19,7 +19,7 @@ const CalendarPage = () => {
     description: '',
   });
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await api.get('/calendar');
@@ -30,11 +30,14 @@ const CalendarPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    const timer = setTimeout(() => {
+      fetchEvents();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchEvents]);
 
   const handleOpenModal = (ev = null) => {
     if (ev) {
@@ -81,6 +84,7 @@ const CalendarPage = () => {
       toast.success('Event deleted');
       fetchEvents();
     } catch (error) {
+      console.error('Delete error:', error);
       toast.error('Failed to delete');
     }
   };

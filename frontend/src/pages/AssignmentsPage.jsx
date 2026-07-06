@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
-import { UserCheck, Plus, Edit2, Trash2, Search, Filter, Download, X, BookOpen, GraduationCap, User } from 'lucide-react';
+import { UserCheck, Plus, Edit2, Trash2, Filter, Download, X, BookOpen, GraduationCap, User } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import toast from 'react-hot-toast';
 
@@ -24,7 +24,8 @@ const AssignmentsPage = () => {
     workloadPeriods: 4,
   });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    await Promise.resolve();
     setIsLoading(true);
     try {
       const [aRes, tRes, sRes, cRes, dRes] = await Promise.all([
@@ -45,11 +46,14 @@ const AssignmentsPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedDept]);
 
   useEffect(() => {
-    fetchData();
-  }, [selectedDept]);
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchData]);
 
   const handleOpenModal = (a = null) => {
     if (a) {
@@ -96,6 +100,7 @@ const AssignmentsPage = () => {
       toast.success('Assignment removed');
       fetchData();
     } catch (error) {
+      console.error('Delete error:', error);
       toast.error('Failed to delete');
     }
   };

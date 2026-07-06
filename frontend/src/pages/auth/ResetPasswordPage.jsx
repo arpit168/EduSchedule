@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Lock, CheckCircle2, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 

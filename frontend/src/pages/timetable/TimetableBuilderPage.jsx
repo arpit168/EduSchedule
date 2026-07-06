@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
+import { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import useTimetableStore from '../../store/useTimetableStore';
 import useAuthStore from '../../store/useAuthStore';
 import api from '../../services/api';
@@ -17,75 +17,105 @@ import {
   Download,
   Plus,
   Filter,
-  Clock,
-  Building2,
-  BookOpen,
-  User,
-  AlertCircle,
-  HelpCircle,
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import toast from 'react-hot-toast';
 
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const PERIODS = [
-  { num: 1, time: '09:00 - 09:45', name: 'Period 1' },
-  { num: 2, time: '09:45 - 10:30', name: 'Period 2' },
-  { num: 3, time: '10:45 - 11:30', name: 'Period 3' },
-  { num: 4, time: '11:30 - 12:15', name: 'Period 4' },
-  { num: 'LUNCH', time: '12:15 - 13:00', name: 'Lunch Break' },
-  { num: 5, time: '13:00 - 13:45', name: 'Period 5' },
-  { num: 6, time: '13:45 - 14:30', name: 'Period 6' },
-  { num: 7, time: '14:45 - 15:30', name: 'Period 7' },
-  { num: 8, time: '15:30 - 16:15', name: 'Period 8' },
+  { num: 1, label: '09:00 - 09:50', time: '09:00 - 09:50' },
+  { num: 2, label: '09:50 - 10:40', time: '09:50 - 10:40' },
+  { num: 3, label: '10:40 - 11:30', time: '10:40 - 11:30' },
+  { num: 4, label: '11:30 - 12:20', time: '11:30 - 12:20' },
+  { num: 'LUNCH', label: '12:20 - 01:10', time: '12:20 - 01:10' },
+  { num: 5, label: '01:10 - 02:00', time: '01:10 - 02:00' },
+  { num: 6, label: '02:00 - 02:50', time: '02:00 - 02:50' },
+  { num: 7, label: '02:50 - 03:40', time: '02:50 - 03:40' },
+  { num: 8, label: '03:40 - 04:30', time: '03:40 - 04:30' },
 ];
 
 const GridCell = memo(({ row, day, p, slot, classRef, viewMode, onDragStart, onDragOver, onDrop, onCellClick }) => {
-  return (
-    <td
-      onDragOver={onDragOver}
-      onDrop={(e) => onDrop(e, classRef?._id || row.id, day, p.num, slot)}
-      onClick={() => onCellClick(classRef, day, p.num, slot, row.id, viewMode)}
-      className="p-2 border-r border-slate-200/60 dark:border-slate-800/60 min-w-[11rem] h-24 align-top cursor-pointer transition-all hover:bg-indigo-50/40 dark:hover:bg-indigo-950/20 group relative"
-    >
-      {slot && slot.subject ? (
-        <div
-          draggable={true}
-          onDragStart={(e) => onDragStart(e, classRef?._id || row.id, day, p.num, slot)}
-          className={`slot-card h-full p-2.5 rounded-2xl border flex flex-col justify-between shadow-sm transition-all ${
-            slot.subject?.type === 'Lab'
-              ? 'bg-rose-500/10 border-rose-500/30 text-rose-950 dark:text-rose-100'
-              : slot.subject?.type === 'Seminar'
-              ? 'bg-amber-500/10 border-amber-500/30 text-amber-950 dark:text-amber-100'
-              : 'bg-indigo-500/10 border-indigo-500/30 text-indigo-950 dark:text-indigo-100'
-          }`}
-        >
-          <div className="flex items-start justify-between gap-1">
-            <span className="font-extrabold text-xs leading-tight truncate">
-              {slot.subject?.name}
-            </span>
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/40 dark:bg-black/40 shrink-0">
-              {slot.subject?.code}
-            </span>
-          </div>
+  const [isDragOver, setIsDragOver] = useState(false);
+  const classRefId = classRef?._id || classRef || row.id;
 
-          <div className="mt-2 flex items-center justify-between text-[11px] font-semibold opacity-90">
-            <span className="truncate flex items-center gap-1">
-              <User size={11} />
-              {row.isTeacherRow ? `${classRef?.className || 'Class'} ${classRef?.section || ''}` : slot.teacher?.name?.split(' ')[slot.teacher?.name?.split(' ').length - 1] || 'N/A'}
-            </span>
-            <span className="px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 shrink-0 font-bold">
-              {slot.room?.roomNumber || 'TBA'}
+  const handleDragStartLocal = (e) => {
+    if (!slot || !slot.subject) return;
+    onDragStart(e, classRefId, day, p.num, slot);
+  };
+
+  const handleDragOverLocal = (e) => {
+    e.preventDefault();
+    if (!isDragOver) setIsDragOver(true);
+    onDragOver(e);
+  };
+
+  const handleDragLeaveLocal = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDropLocal = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    onDrop(e, classRefId, day, p.num, slot);
+  };
+
+  return (
+    <td className="p-1.5 border-r border-slate-200/60 dark:border-slate-800/60 min-w-[150px] h-24 align-top">
+      <div
+        draggable={!!(slot && slot.subject)}
+        onDragStart={handleDragStartLocal}
+        onDragOver={handleDragOverLocal}
+        onDragLeave={handleDragLeaveLocal}
+        onDrop={handleDropLocal}
+        onClick={() => onCellClick(classRef, day, p.num, slot, row.id, viewMode)}
+        className={`h-full w-full rounded-2xl p-2.5 transition-all cursor-pointer relative group flex flex-col justify-between border ${isDragOver
+          ? 'bg-indigo-500/20 border-indigo-500 scale-105 shadow-xl z-10 ring-2 ring-indigo-500/50'
+          : slot && slot.subject
+            ? 'bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md hover:border-indigo-500/40'
+            : 'bg-slate-50/50 dark:bg-slate-900/40 hover:bg-slate-100/50 dark:hover:bg-slate-900/80 border-dashed border-slate-300 dark:border-slate-800'
+          }`}
+      >
+        {slot && slot.subject ? (
+          <>
+            <div className="flex items-start justify-between gap-1">
+              <span
+                className="font-black text-xs text-slate-900 dark:text-white line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
+                title={slot.subject?.name}
+              >
+                {slot.subject?.name || 'No Subject'}
+              </span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 shrink-0">
+                {slot.subject?.code}
+              </span>
+            </div>
+
+            <div className="space-y-0.5 mt-auto text-[11px] text-slate-600 dark:text-slate-400">
+              <div className="flex items-center justify-between truncate">
+                <span className="font-medium text-slate-700 dark:text-slate-300 truncate" title={slot.teacher?.name}>
+                  {slot.teacher?.name || 'No Teacher'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-slate-400">
+                <span>{slot.room?.roomNumber || 'No Room'}</span>
+                {slot.classRef && (
+                  <span className="uppercase font-semibold text-[9px] bg-slate-100 dark:bg-slate-800 px-1 rounded">
+                    {slot.classRef?.className} {slot.classRef?.section}
+                  </span>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="h-full flex flex-col items-center justify-center gap-1 text-slate-400 group-hover:text-indigo-500">
+            <Plus size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+              Add Period
             </span>
           </div>
-        </div>
-      ) : (
-        <div className="w-full h-full rounded-2xl border border-dashed border-slate-200 dark:border-slate-800/80 flex items-center justify-center text-slate-300 dark:text-slate-700 font-medium text-[11px] group-hover:border-indigo-400 group-hover:text-indigo-500 transition-all">
-          <Plus size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-        </div>
-      )}
+        )}
+      </div>
     </td>
   );
 });
@@ -104,7 +134,6 @@ const TimetableBuilderPage = () => {
     fetchTimetables,
     swapSlots,
     updateSlot,
-    isLoading,
   } = useTimetableStore();
 
   const { user } = useAuthStore();
@@ -245,7 +274,7 @@ const TimetableBuilderPage = () => {
   const exportToPDF = () => {
     const doc = new jsPDF('l', 'mm', 'a4'); // landscape
     doc.setFontSize(18);
-    doc.text('Antigravity Timetable OS - Master Campus Timetables', 14, 20);
+    doc.text('Learning Timetable OS - Master Campus Timetables', 14, 20);
     doc.setFontSize(11);
     doc.setTextColor(100);
     doc.text(`Academic Session: 2026-2027 | Generated: ${new Date().toLocaleDateString()}`, 14, 28);
@@ -363,21 +392,19 @@ const TimetableBuilderPage = () => {
             <div className="flex items-center p-1 bg-slate-200/80 dark:bg-slate-800 rounded-2xl border border-slate-300/50 dark:border-slate-700/50">
               <button
                 onClick={() => setViewMode('teacher')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                  viewMode === 'teacher'
-                    ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'teacher'
+                  ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-md'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
               >
                 <Users size={14} /> Rows: Teachers
               </button>
               <button
                 onClick={() => setViewMode('class')}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                  viewMode === 'class'
-                    ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'class'
+                  ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-md'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
               >
                 <GraduationCap size={14} /> Rows: Classes
               </button>
@@ -449,6 +476,13 @@ const TimetableBuilderPage = () => {
               onClick={exportToExcel}
               className="p-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 transition-all"
               title="Export Master Excel"
+            >
+              <Download size={16} />
+            </button>
+            <button
+              onClick={exportToPDF}
+              className="p-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/20 transition-all"
+              title="Export Master PDF"
             >
               <Download size={16} />
             </button>
@@ -539,12 +573,11 @@ const TimetableBuilderPage = () => {
                   Period / Time
                 </th>
                 {DAYS.map((day) =>
-                  PERIODS.map((p, idx) => (
+                  PERIODS.map((p) => (
                     <th
-                      key={`${day}-${idx}`}
-                      className={`p-2 text-center min-w-[10rem] border-r border-slate-200/60 dark:border-slate-800/60 ${
-                        p.num === 'LUNCH' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 min-w-[5rem]' : ''
-                      }`}
+                      key={`${day}-${p.num}`}
+                      className={`p-2 text-center min-w-[10rem] border-r border-slate-200/60 dark:border-slate-800/60 ${p.num === 'LUNCH' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 min-w-[5rem]' : ''
+                        }`}
                     >
                       <div>{p.name}</div>
                       <div className="text-[9px] font-normal text-slate-400">{p.time}</div>
@@ -573,7 +606,7 @@ const TimetableBuilderPage = () => {
 
                     {/* Cells for each Day and Period */}
                     {DAYS.map((day) =>
-                      PERIODS.map((p, idx) => {
+                      PERIODS.map((p) => {
                         if (p.num === 'LUNCH') {
                           return (
                             <td

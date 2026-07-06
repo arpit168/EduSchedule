@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
-import { Settings, Clock, Calendar, Check, Shield, Bell, Sparkles } from 'lucide-react';
+import { Settings, Check, Shield, Clock, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const SettingsPage = () => {
   const { user } = useAuthStore();
-  const [settings, setSettings] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   const [formData, setFormData] = useState({
     academicSession: '2026-2027',
-    schoolName: 'Antigravity Academy of Technology & Sciences',
+    schoolName: 'Learning Academy of Technology & Sciences',
     workingDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     workingHoursStart: '09:00',
     workingHoursEnd: '16:45',
@@ -29,10 +28,9 @@ const SettingsPage = () => {
       try {
         const res = await api.get('/settings');
         if (res.data.data) {
-          setSettings(res.data.data);
           setFormData({
             academicSession: res.data.data.academicSession || '2026-2027',
-            schoolName: res.data.data.schoolName || 'Antigravity Academy of Technology & Sciences',
+            schoolName: res.data.data.schoolName || 'Learning Academy of Technology & Sciences',
             workingDays: res.data.data.workingDays || ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             workingHoursStart: res.data.data.workingHours?.start || '09:00',
             workingHoursEnd: res.data.data.workingHours?.end || '16:45',
@@ -74,6 +72,7 @@ const SettingsPage = () => {
       await api.put('/settings', payload);
       toast.success('Campus configuration saved successfully!');
     } catch (error) {
+      console.error('Save error:', error);
       toast.error('Failed to update system settings');
     } finally {
       setIsSaving(false);
@@ -160,11 +159,10 @@ const SettingsPage = () => {
                     key={day}
                     type="button"
                     onClick={() => toggleDay(day)}
-                    className={`px-4 py-2 rounded-xl font-bold text-xs transition-all ${
-                      active
-                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                    }`}
+                    className={`px-4 py-2 rounded-xl font-bold text-xs transition-all ${active
+                      ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                      }`}
                   >
                     {day}
                   </button>

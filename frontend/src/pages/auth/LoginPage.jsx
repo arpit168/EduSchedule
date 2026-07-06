@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../../store/useAuthStore';
 import { Mail, Lock, LogIn, Sparkles, ShieldCheck, UserCheck, Award } from 'lucide-react';
@@ -38,7 +38,7 @@ const LoginPage = () => {
             A
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-            Antigravity <span className="text-indigo-400">Timetable OS</span>
+            Learning <span className="text-indigo-400">Timetable OS</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">Enterprise Scheduling & Management Portal</p>
         </div>
@@ -51,7 +51,7 @@ const LoginPage = () => {
           <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
-              onClick={() => handleDemoLogin('admin@antigravity.edu', 'password123')}
+              onClick={() => handleDemoLogin('admin@Learning.edu', 'password123')}
               className="flex flex-col items-center p-2 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold transition-all"
             >
               <ShieldCheck size={16} className="mb-1 text-indigo-400" />
@@ -59,7 +59,7 @@ const LoginPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleDemoLogin('hod@antigravity.edu', 'password123')}
+              onClick={() => handleDemoLogin('hod@Learning.edu', 'password123')}
               className="flex flex-col items-center p-2 rounded-xl bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/30 text-violet-300 text-xs font-semibold transition-all"
             >
               <Award size={16} className="mb-1 text-violet-400" />
@@ -67,7 +67,7 @@ const LoginPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => handleDemoLogin('anita@antigravity.edu', 'password123')}
+              onClick={() => handleDemoLogin('anita@Learning.edu', 'password123')}
               className="flex flex-col items-center p-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold transition-all"
             >
               <UserCheck size={16} className="mb-1 text-emerald-400" />
@@ -86,7 +86,7 @@ const LoginPage = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@antigravity.edu"
+                placeholder="admin@Learning.edu"
                 className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
               />
             </div>
@@ -128,7 +128,7 @@ const LoginPage = () => {
         </form>
 
         <div className="mt-8 text-center text-xs text-slate-500">
-          © 2026 Antigravity Institute of Technology & Sciences.
+          © 2026 Learning Institute of Technology & Sciences.
         </div>
       </div>
     </div>
