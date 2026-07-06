@@ -15,7 +15,7 @@ const protect = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Not authorized to access this route. Please log in.' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkeyforantigravity123456789');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkeyforAntigravity123456789');
     req.user = await User.findById(decoded.id).populate('department');
 
     if (!req.user) {

@@ -15,37 +15,22 @@ const classSchema = new mongoose.Schema(
     semester: {
       type: Number,
       required: [true, 'Please provide semester'],
-      min: 1,
-      max: 10,
+      default: 1,
     },
-    batchYear: {
+    batch: {
       type: String,
       required: [true, 'Please provide batch year (e.g. 2025-2028)'],
-      trim: true,
+      default: '2025-2028',
     },
-    department: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    classTeacher: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Teacher',
-      default: null,
-    },
-    studentCount: {
+    strength: {
       type: Number,
+      required: true,
       default: 60,
     },
-    defaultRoom: {
+    department: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Room',
-      default: null,
-    },
-    status: {
-      type: String,
-      enum: ['Active', 'Archived'],
-      default: 'Active',
+      ref: 'Department',
+      required: [true, 'Please provide department'],
     },
   },
   {
@@ -53,7 +38,14 @@ const classSchema = new mongoose.Schema(
   }
 );
 
-// Compound index to prevent duplicate class-section in same batch
-classSchema.index({ className: 1, section: 1, batchYear: 1 }, { unique: true });
+// Virtual field for full name like "BCA 2A"
+classSchema.virtual('fullName').get(function () {
+  return `${this.className} ${this.section}`;
+});
+
+classSchema.set('toJSON', { virtuals: true });
+classSchema.set('toObject', { virtuals: true });
+
+classSchema.index({ className: 1, section: 1 }, { unique: true });
 
 export default mongoose.model('Class', classSchema);

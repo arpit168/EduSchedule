@@ -24,39 +24,30 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['Admin', 'HOD', 'Teacher'],
+      enum: ['Admin', 'Teacher', 'HOD'],
       default: 'Teacher',
     },
     department: {
-      type: String,
-      required: function () {
-        return this.role === 'HOD' || this.role === 'Teacher';
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Department',
+      default: null,
     },
     employeeId: {
       type: String,
-      unique: true,
-      sparse: true,
+      trim: true,
+      default: null,
     },
-    avatar: {
+    profilePhoto: {
       type: String,
-      default: '',
+      default: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     },
     phone: {
       type: String,
       default: '',
     },
-    designation: {
+    refreshToken: {
       type: String,
-      default: 'Assistant Professor',
-    },
-    status: {
-      type: String,
-      enum: ['Active', 'On Leave', 'Inactive'],
-      default: 'Active',
-    },
-    lastLogin: {
-      type: Date,
+      select: false,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -66,7 +57,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Encrypt password using bcrypt
+// Hash password before saving
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) {
     return;
@@ -75,7 +66,7 @@ userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Match user entered password to hashed password in database
+// Compare entered password with hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

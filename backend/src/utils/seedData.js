@@ -52,7 +52,7 @@ const seedDatabase = async () => {
     // 3. Create Users (Admin, HOD, Teacher)
     const adminUser = await User.create({
       name: 'Dr. Arpit Sharma',
-      email: 'admin@antigravity.edu',
+      email: 'admin@Antigravity.edu',
       password: 'password123',
       role: 'Admin',
       phone: '+91 9876543210',
@@ -61,7 +61,7 @@ const seedDatabase = async () => {
 
     const hodUser = await User.create({
       name: 'Dr. Rajesh Rao',
-      email: 'hod@antigravity.edu',
+      email: 'hod@Antigravity.edu',
       password: 'password123',
       role: 'HOD',
       department: cseDept._id,
@@ -71,7 +71,7 @@ const seedDatabase = async () => {
 
     const teacherUser1 = await User.create({
       name: 'Prof. Anita Verma',
-      email: 'anita@antigravity.edu',
+      email: 'anita@Antigravity.edu',
       password: 'password123',
       role: 'Teacher',
       department: cseDept._id,
@@ -81,7 +81,7 @@ const seedDatabase = async () => {
 
     const teacherUser2 = await User.create({
       name: 'Prof. Vikram Singh',
-      email: 'vikram@antigravity.edu',
+      email: 'vikram@Antigravity.edu',
       password: 'password123',
       role: 'Teacher',
       department: cseDept._id,
@@ -94,7 +94,7 @@ const seedDatabase = async () => {
       name: 'Dr. Rajesh Rao',
       employeeId: 'EMP1001',
       department: cseDept._id,
-      email: 'hod@antigravity.edu',
+      email: 'hod@Antigravity.edu',
       phone: '+91 9876543211',
       qualification: 'Ph.D in CSE (IIT Bombay)',
       experience: 16,
@@ -109,7 +109,7 @@ const seedDatabase = async () => {
       name: 'Prof. Anita Verma',
       employeeId: 'EMP1002',
       department: cseDept._id,
-      email: 'anita@antigravity.edu',
+      email: 'anita@Antigravity.edu',
       phone: '+91 9876543212',
       qualification: 'M.Tech in Software Systems',
       experience: 9,
@@ -124,7 +124,7 @@ const seedDatabase = async () => {
       name: 'Prof. Vikram Singh',
       employeeId: 'EMP1003',
       department: cseDept._id,
-      email: 'vikram@antigravity.edu',
+      email: 'vikram@Antigravity.edu',
       phone: '+91 9876543213',
       qualification: 'M.Tech in AI & ML',
       experience: 7,
@@ -139,7 +139,7 @@ const seedDatabase = async () => {
       name: 'Dr. Suresh Kumar',
       employeeId: 'EMP1004',
       department: itDept._id,
-      email: 'suresh@antigravity.edu',
+      email: 'suresh@Antigravity.edu',
       phone: '+91 9876543214',
       qualification: 'Ph.D in Networking',
       experience: 12,
@@ -153,7 +153,7 @@ const seedDatabase = async () => {
       name: 'Prof. Meha Kapoor',
       employeeId: 'EMP1005',
       department: mbaDept._id,
-      email: 'meha@antigravity.edu',
+      email: 'meha@Antigravity.edu',
       phone: '+91 9876543215',
       qualification: 'MBA, Ph.D in Finance',
       experience: 8,
@@ -223,9 +223,9 @@ const seedDatabase = async () => {
     await Notification.create({ recipient: 'All', title: 'Mid-Semester Exam Dates Announced', message: 'Mid-term exams will start from October 12th. Please review the Academic Calendar.', type: 'Holiday', isRead: false });
 
     console.log('Database Seeding Completed Successfully! You can now log in with:');
-    console.log('Admin: admin@antigravity.edu / password123');
-    console.log('Teacher: anita@antigravity.edu / password123');
-    console.log('HOD: hod@antigravity.edu / password123');
+    console.log('Admin: admin@Antigravity.edu / password123');
+    console.log('Teacher: anita@Antigravity.edu / password123');
+    console.log('HOD: hod@Antigravity.edu / password123');
 
     process.exit(0);
   } catch (error) {

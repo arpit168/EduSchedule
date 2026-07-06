@@ -1,18 +1,20 @@
 import mongoose from 'mongoose';
 
-const periodSlotSchema = new mongoose.Schema({
+const slotSchema = new mongoose.Schema({
   day: {
     type: String,
-    enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     required: true,
   },
   periodNumber: {
     type: Number,
     required: true, // 1 to 8 (or 0 for break/lunch)
   },
+  periodName: {
+    type: String, // e.g. "Period 1", "Break", "Period 4", "Lunch"
+  },
   timeSlot: {
-    type: String, // e.g., "09:00 - 09:50"
-    default: '',
+    type: String, // e.g. "09:00-09:50"
   },
   subject: {
     type: mongoose.Schema.Types.ObjectId,
@@ -33,49 +35,36 @@ const periodSlotSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  breakLabel: {
-    type: String,
-    default: '', // e.g. "Tea Break", "Lunch"
+  isLunch: {
+    type: Boolean,
+    default: false,
   },
 });
 
 const timetableSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     classRef: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Class',
       required: true,
     },
-    academicYear: {
+    sessionYear: {
       type: String,
       default: '2026-2027',
-    },
-    semester: {
-      type: Number,
       required: true,
     },
-    schedule: [periodSlotSchema],
     status: {
       type: String,
-      enum: ['Draft', 'Published', 'Archived'],
-      default: 'Draft',
+      enum: ['Draft', 'Published'],
+      default: 'Published',
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
+    slots: [slotSchema],
   },
   {
     timestamps: true,
   }
 );
 
-// Prevent multiple active timetables for same class in same academic year
-timetableSchema.index({ classRef: 1, academicYear: 1, semester: 1 }, { unique: true });
+timetableSchema.index({ classRef: 1, sessionYear: 1 }, { unique: true });
 
 export default mongoose.model('Timetable', timetableSchema);

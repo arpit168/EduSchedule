@@ -6,7 +6,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import mongoSanitize from 'express-mongo-sanitize';
+import mongoSanitize from './src/middlewares/mongoSanitizeMiddleware.js';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
 import { fileURLToPath } from 'url';

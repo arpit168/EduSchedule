@@ -6,13 +6,13 @@ import bcrypt from 'bcryptjs';
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
     { id: user._id, role: user.role },
-    process.env.JWT_SECRET || 'supersecretjwtkeyforantigravity123456789',
+    process.env.JWT_SECRET || 'supersecretjwtkeyforAntigravity123456789',
     { expiresIn: '15m' }
   );
 
   const refreshToken = jwt.sign(
     { id: user._id },
-    process.env.JWT_REFRESH_SECRET || 'supersecretrefreshjwtkeyforantigravity987654321',
+    process.env.JWT_REFRESH_SECRET || 'supersecretrefreshjwtkeyforAntigravity987654321',
     { expiresIn: '7d' }
   );
 
@@ -85,7 +85,7 @@ const refreshToken = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'No refresh token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET || 'supersecretrefreshjwtkeyforantigravity987654321');
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET || 'supersecretrefreshjwtkeyforAntigravity987654321');
     const user = await User.findById(decoded.id).select('+refreshToken').populate('department');
 
     if (!user || user.refreshToken !== token) {

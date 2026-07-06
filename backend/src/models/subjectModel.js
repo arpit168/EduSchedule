@@ -14,44 +14,35 @@ const subjectSchema = new mongoose.Schema(
       uppercase: true,
       trim: true,
     },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Department',
+      required: [true, 'Please provide department'],
+    },
+    credits: {
+      type: Number,
+      required: true,
+      default: 3,
+    },
+    weeklyRequiredPeriods: {
+      type: Number,
+      required: true,
+      default: 4,
+    },
+    assignedTeachers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Teacher',
+      },
+    ],
     type: {
       type: String,
       enum: ['Theory', 'Lab', 'Seminar', 'Project'],
       default: 'Theory',
     },
-    department: {
+    color: {
       type: String,
-      required: [true, 'Please provide department'],
-      trim: true,
-    },
-    credits: {
-      type: Number,
-      required: true,
-      min: 1,
-      max: 10,
-    },
-    weeklyPeriods: {
-      type: Number,
-      required: true,
-      min: 1,
-      max: 12,
-    },
-    isLab: {
-      type: Boolean,
-      default: false,
-    },
-    consecutivePeriods: {
-      type: Number,
-      default: 1, // 2 or 3 for Lab sessions
-    },
-    requiresSpecialRoom: {
-      type: Boolean,
-      default: false,
-    },
-    specialRoomType: {
-      type: String,
-      enum: ['Computer Lab', 'Physics Lab', 'Chemistry Lab', 'Workshop', 'Seminar Hall', 'None'],
-      default: 'None',
+      default: 'indigo', // indigo, emerald, violet, amber, rose, cyan, blue, purple
     },
   },
   {
