@@ -1,9 +1,9 @@
-const Teacher = require('../models/teacherModel');
-const ClassModel = require('../models/classModel');
-const Subject = require('../models/subjectModel');
-const Room = require('../models/roomModel');
-const Timetable = require('../models/timetableModel');
-const Department = require('../models/departmentModel');
+import Teacher from '../models/teacherModel.js';
+import ClassModel from '../models/classModel.js';
+import Subject from '../models/subjectModel.js';
+import Room from '../models/roomModel.js';
+import Timetable from '../models/timetableModel.js';
+import Department from '../models/departmentModel.js';
 
 const getDashboardStats = async (req, res, next) => {
   try {
@@ -228,7 +228,7 @@ const getFreeTeachersFinder = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
   getDashboardStats,
   getTeacherWorkloadReport,
   getSubjectDistributionReport,

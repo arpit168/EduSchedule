@@ -1,5 +1,5 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   getTimetables,
   getTeacherTimetable,
   getClassTimetable,
@@ -7,8 +7,8 @@ const {
   updateSlot,
   swapSlots,
   triggerAutoGenerate,
-} = require('../controllers/timetableController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
+} from '../controllers/timetableController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -23,4 +23,4 @@ router.post('/auto-generate', protect, authorize('Admin'), triggerAutoGenerate);
 router.get('/teacher/:teacherId', protect, getTeacherTimetable);
 router.get('/class/:classId', protect, getClassTimetable);
 
-module.exports = router;
+export default router;

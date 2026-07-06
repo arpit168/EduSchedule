@@ -1,7 +1,7 @@
-const express = require('express');
-const { getTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacher, bulkUploadTeachers } = require('../controllers/teacherController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
-const upload = require('../utils/upload');
+import express from 'express';
+import { getTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacher, bulkUploadTeachers } from '../controllers/teacherController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
+import upload from '../utils/upload.js';
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.route('/:id')
   .put(protect, authorize('Admin', 'HOD'), updateTeacher)
   .delete(protect, authorize('Admin'), deleteTeacher);
 
-module.exports = router;
+export default router;

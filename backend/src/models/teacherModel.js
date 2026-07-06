@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const teacherSchema = new mongoose.Schema(
   {
@@ -13,10 +13,15 @@ const teacherSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    designation: {
+      type: String,
+      enum: ['Professor', 'Associate Professor', 'Assistant Professor', 'Lecturer', 'Guest Faculty'],
+      default: 'Assistant Professor',
+    },
     department: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Department',
+      type: String,
       required: [true, 'Please provide department'],
+      trim: true,
     },
     email: {
       type: String,
@@ -29,36 +34,43 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-    qualification: {
-      type: String,
-      default: 'M.Tech / Ph.D',
-    },
-    experience: {
-      type: Number,
-      default: 5, // in years
-    },
-    workingDays: {
-      type: [String],
-      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    },
-    availableTimeSlots: {
-      type: [String],
-      default: ['Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5', 'Period 6', 'Period 7', 'Period 8'],
-    },
-    maxDailyPeriods: {
-      type: Number,
-      default: 4,
-    },
+    specialization: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
     maxWeeklyPeriods: {
       type: Number,
-      default: 20,
+      default: 24, // Standard UGC/AICTE max workload
     },
-    profilePhoto: {
+    preferredSlots: [
+      {
+        day: { type: String, enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] },
+        periodNumber: { type: Number },
+      },
+    ],
+    unavailableSlots: [
+      {
+        day: { type: String, enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] },
+        periodNumber: { type: Number },
+        reason: { type: String, default: 'Busy' },
+      },
+    ],
+    isVisiting: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
       type: String,
-      default: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      enum: ['Active', 'On Leave', 'Inactive'],
+      default: 'Active',
     },
-    userAccount: {
+    colorCode: {
+      type: String,
+      default: '#6366F1', // Indigo for timetable UI
+    },
+    userRef: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       default: null,
@@ -72,4 +84,4 @@ const teacherSchema = new mongoose.Schema(
 // Index for instant search
 teacherSchema.index({ name: 'text', employeeId: 'text', email: 'text' });
 
-module.exports = mongoose.model('Teacher', teacherSchema);
+export default mongoose.model('Teacher', teacherSchema);

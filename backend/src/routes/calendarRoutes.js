@@ -1,6 +1,6 @@
-const express = require('express');
-const { getEvents, createEvent, updateEvent, deleteEvent } = require('../controllers/calendarController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
+import express from 'express';
+import { getEvents, createEvent, updateEvent, deleteEvent } from '../controllers/calendarController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, authorize('Admin', 'HOD'), updateEvent)
   .delete(protect, authorize('Admin', 'HOD'), deleteEvent);
 
-module.exports = router;
+export default router;

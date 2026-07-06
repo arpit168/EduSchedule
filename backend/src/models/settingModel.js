@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const periodConfigSchema = new mongoose.Schema({
   periodNumber: { type: Number, required: true },
@@ -53,4 +53,4 @@ const settingSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Setting', settingSchema);
+export default mongoose.model('Setting', settingSchema);

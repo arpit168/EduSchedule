@@ -1,7 +1,7 @@
-const express = require('express');
-const { getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, bulkUploadSubjects } = require('../controllers/subjectController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
-const upload = require('../utils/upload');
+import express from 'express';
+import { getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, bulkUploadSubjects } from '../controllers/subjectController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
+import upload from '../utils/upload.js';
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.route('/:id')
   .put(protect, authorize('Admin', 'HOD'), updateSubject)
   .delete(protect, authorize('Admin'), deleteSubject);
 
-module.exports = router;
+export default router;

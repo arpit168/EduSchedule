@@ -1,6 +1,6 @@
-const express = require('express');
-const { getSettings, updateSettings, getAuditLogs } = require('../controllers/settingController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
+import express from 'express';
+import { getSettings, updateSettings, getAuditLogs } from '../controllers/settingController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -10,4 +10,4 @@ router.route('/')
 
 router.get('/audit-logs', protect, authorize('Admin'), getAuditLogs);
 
-module.exports = router;
+export default router;

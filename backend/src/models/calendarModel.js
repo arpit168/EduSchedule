@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const calendarSchema = new mongoose.Schema(
   {
@@ -40,4 +40,4 @@ const calendarSchema = new mongoose.Schema(
 
 calendarSchema.index({ date: 1, sessionYear: 1 });
 
-module.exports = mongoose.model('AcademicCalendar', calendarSchema);
+export default mongoose.model('AcademicCalendar', calendarSchema);

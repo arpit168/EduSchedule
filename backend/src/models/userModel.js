@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
   {
@@ -24,30 +24,39 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['Admin', 'Teacher', 'HOD'],
+      enum: ['Admin', 'HOD', 'Teacher'],
       default: 'Teacher',
     },
     department: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Department',
-      default: null,
+      type: String,
+      required: function () {
+        return this.role === 'HOD' || this.role === 'Teacher';
+      },
     },
     employeeId: {
       type: String,
-      trim: true,
-      default: null,
+      unique: true,
+      sparse: true,
     },
-    profilePhoto: {
+    avatar: {
       type: String,
-      default: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      default: '',
     },
     phone: {
       type: String,
       default: '',
     },
-    refreshToken: {
+    designation: {
       type: String,
-      select: false,
+      default: 'Assistant Professor',
+    },
+    status: {
+      type: String,
+      enum: ['Active', 'On Leave', 'Inactive'],
+      default: 'Active',
+    },
+    lastLogin: {
+      type: Date,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -57,7 +66,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Hash password before saving
+// Encrypt password using bcrypt
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) {
     return;
@@ -66,9 +75,9 @@ userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Compare entered password with hashed password
+// Match user entered password to hashed password in database
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);

@@ -1,20 +1,18 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const slotSchema = new mongoose.Schema({
+const periodSlotSchema = new mongoose.Schema({
   day: {
     type: String,
-    enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     required: true,
   },
   periodNumber: {
     type: Number,
     required: true, // 1 to 8 (or 0 for break/lunch)
   },
-  periodName: {
-    type: String, // e.g. "Period 1", "Break", "Period 4", "Lunch"
-  },
   timeSlot: {
-    type: String, // e.g. "09:00-09:50"
+    type: String, // e.g., "09:00 - 09:50"
+    default: '',
   },
   subject: {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,36 +33,49 @@ const slotSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  isLunch: {
-    type: Boolean,
-    default: false,
+  breakLabel: {
+    type: String,
+    default: '', // e.g. "Tea Break", "Lunch"
   },
 });
 
 const timetableSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     classRef: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Class',
       required: true,
     },
-    sessionYear: {
+    academicYear: {
       type: String,
       default: '2026-2027',
+    },
+    semester: {
+      type: Number,
       required: true,
     },
+    schedule: [periodSlotSchema],
     status: {
       type: String,
-      enum: ['Draft', 'Published'],
-      default: 'Published',
+      enum: ['Draft', 'Published', 'Archived'],
+      default: 'Draft',
     },
-    slots: [slotSchema],
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
   {
     timestamps: true,
   }
 );
 
-timetableSchema.index({ classRef: 1, sessionYear: 1 }, { unique: true });
+// Prevent multiple active timetables for same class in same academic year
+timetableSchema.index({ classRef: 1, academicYear: 1, semester: 1 }, { unique: true });
 
-module.exports = mongoose.model('Timetable', timetableSchema);
+export default mongoose.model('Timetable', timetableSchema);

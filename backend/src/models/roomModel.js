@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const roomSchema = new mongoose.Schema(
   {
@@ -15,21 +15,31 @@ const roomSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['Classroom', 'Lab', 'Auditorium', 'Seminar Hall'],
-      default: 'Classroom',
+      enum: ['Lecture Hall', 'Computer Lab', 'Physics Lab', 'Chemistry Lab', 'Workshop', 'Seminar Hall', 'Faculty Room'],
+      default: 'Lecture Hall',
     },
     building: {
       type: String,
       required: [true, 'Please provide building name/block'],
+      trim: true,
       default: 'Main Block',
     },
     floor: {
-      type: String,
-      default: '1st Floor',
+      type: Number,
+      default: 1,
     },
-    isAvailable: {
+    hasProjector: {
       type: Boolean,
       default: true,
+    },
+    hasAC: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
+      enum: ['Available', 'Under Maintenance', 'Reserved'],
+      default: 'Available',
     },
   },
   {
@@ -39,4 +49,4 @@ const roomSchema = new mongoose.Schema(
 
 roomSchema.index({ roomNumber: 'text', building: 'text' });
 
-module.exports = mongoose.model('Room', roomSchema);
+export default mongoose.model('Room', roomSchema);

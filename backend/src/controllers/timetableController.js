@@ -1,8 +1,8 @@
-const Timetable = require('../models/timetableModel');
-const Notification = require('../models/notificationModel');
-const AuditLog = require('../models/auditLogModel');
-const { checkSlotConflicts } = require('../services/conflictService');
-const { generateTimetable } = require('../services/generatorService');
+import Timetable from '../models/timetableModel.js';
+import Notification from '../models/notificationModel.js';
+import AuditLog from '../models/auditLogModel.js';
+import { checkSlotConflicts } from '../services/conflictService.js';
+import { generateTimetable } from '../services/generatorService.js';
 
 const getTimetables = async (req, res, next) => {
   try {
@@ -271,7 +271,7 @@ const triggerAutoGenerate = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export {
   getTimetables,
   getTeacherTimetable,
   getClassTimetable,

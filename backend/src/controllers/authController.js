@@ -1,7 +1,7 @@
-const User = require('../models/userModel');
-const Teacher = require('../models/teacherModel');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+import User from '../models/userModel.js';
+import Teacher from '../models/teacherModel.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
@@ -173,4 +173,4 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { login, refreshToken, logout, getMe, updateProfile };
+export { login, refreshToken, logout, getMe, updateProfile };

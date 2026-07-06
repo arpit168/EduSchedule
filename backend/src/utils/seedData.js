@@ -1,19 +1,19 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const connectDB = require('../config/db');
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import connectDB from '../config/db.js';
 
-const User = require('../models/userModel');
-const Department = require('../models/departmentModel');
-const Teacher = require('../models/teacherModel');
-const Subject = require('../models/subjectModel');
-const ClassModel = require('../models/classModel');
-const Room = require('../models/roomModel');
-const Assignment = require('../models/assignmentModel');
-const Timetable = require('../models/timetableModel');
-const AcademicCalendar = require('../models/calendarModel');
-const Setting = require('../models/settingModel');
-const Notification = require('../models/notificationModel');
-const { generateTimetable } = require('../services/generatorService');
+import User from '../models/userModel.js';
+import Department from '../models/departmentModel.js';
+import Teacher from '../models/teacherModel.js';
+import Subject from '../models/subjectModel.js';
+import ClassModel from '../models/classModel.js';
+import Room from '../models/roomModel.js';
+import Assignment from '../models/assignmentModel.js';
+import Timetable from '../models/timetableModel.js';
+import AcademicCalendar from '../models/calendarModel.js';
+import Setting from '../models/settingModel.js';
+import Notification from '../models/notificationModel.js';
+import { generateTimetable } from '../services/generatorService.js';
 
 const seedDatabase = async () => {
   try {

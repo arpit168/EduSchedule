@@ -1,8 +1,8 @@
-const xlsx = require('xlsx');
-const Teacher = require('../models/teacherModel');
-const Subject = require('../models/subjectModel');
-const Room = require('../models/roomModel');
-const Department = require('../models/departmentModel');
+import xlsx from 'xlsx';
+import Teacher from '../models/teacherModel.js';
+import Subject from '../models/subjectModel.js';
+import Room from '../models/roomModel.js';
+import Department from '../models/departmentModel.js';
 
 /**
  * Excel Bulk Import & Export Service
@@ -142,7 +142,7 @@ const importRoomsFromExcel = async (filePath) => {
   return { importedCount, errors };
 };
 
-module.exports = {
+export {
   importTeachersFromExcel,
   importSubjectsFromExcel,
   importRoomsFromExcel,

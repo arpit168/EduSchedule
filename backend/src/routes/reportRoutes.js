@@ -1,12 +1,12 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   getDashboardStats,
   getTeacherWorkloadReport,
   getSubjectDistributionReport,
   getRoomUsageReport,
   getFreeTeachersFinder,
-} = require('../controllers/reportController');
-const { protect } = require('../middlewares/authMiddleware');
+} from '../controllers/reportController.js';
+import { protect } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.get('/subjects', protect, getSubjectDistributionReport);
 router.get('/rooms', protect, getRoomUsageReport);
 router.get('/free-teachers', protect, getFreeTeachersFinder);
 
-module.exports = router;
+export default router;

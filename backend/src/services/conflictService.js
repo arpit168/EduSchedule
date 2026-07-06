@@ -1,8 +1,8 @@
-const Timetable = require('../models/timetableModel');
-const Teacher = require('../models/teacherModel');
-const Room = require('../models/roomModel');
-const AcademicCalendar = require('../models/calendarModel');
-const Setting = require('../models/settingModel');
+import Timetable from '../models/timetableModel.js';
+import Teacher from '../models/teacherModel.js';
+import Room from '../models/roomModel.js';
+import AcademicCalendar from '../models/calendarModel.js';
+import Setting from '../models/settingModel.js';
 
 /**
  * Enterprise Conflict Detection Engine
@@ -147,4 +147,4 @@ const checkSlotConflicts = async ({
   };
 };
 
-module.exports = { checkSlotConflicts };
+export { checkSlotConflicts };

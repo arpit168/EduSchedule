@@ -1,6 +1,6 @@
-const express = require('express');
-const { getDepartments, getDepartmentById, createDepartment, updateDepartment, deleteDepartment } = require('../controllers/departmentController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
+import express from 'express';
+import { getDepartments, getDepartmentById, createDepartment, updateDepartment, deleteDepartment } from '../controllers/departmentController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -13,4 +13,4 @@ router.route('/:id')
   .put(protect, authorize('Admin', 'HOD'), updateDepartment)
   .delete(protect, authorize('Admin'), deleteDepartment);
 
-module.exports = router;
+export default router;

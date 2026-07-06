@@ -1,5 +1,5 @@
-const Setting = require('../models/settingModel');
-const AuditLog = require('../models/auditLogModel');
+import Setting from '../models/settingModel.js';
+import AuditLog from '../models/auditLogModel.js';
 
 const getSettings = async (req, res, next) => {
   try {
@@ -75,4 +75,4 @@ const getAuditLogs = async (req, res, next) => {
   }
 };
 
-module.exports = { getSettings, updateSettings, getAuditLogs };
+export { getSettings, updateSettings, getAuditLogs };

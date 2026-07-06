@@ -1,6 +1,6 @@
-const Room = require('../models/roomModel');
-const { importRoomsFromExcel } = require('../services/importExportService');
-const fs = require('fs');
+import Room from '../models/roomModel.js';
+import { importRoomsFromExcel } from '../services/importExportService.js';
+import fs from 'fs';
 
 const getRooms = async (req, res, next) => {
   try {
@@ -91,4 +91,4 @@ const bulkUploadRooms = async (req, res, next) => {
   }
 };
 
-module.exports = { getRooms, getRoomById, createRoom, updateRoom, deleteRoom, bulkUploadRooms };
+export { getRooms, getRoomById, createRoom, updateRoom, deleteRoom, bulkUploadRooms };

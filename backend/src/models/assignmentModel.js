@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const assignmentSchema = new mongoose.Schema(
   {
@@ -38,4 +38,4 @@ const assignmentSchema = new mongoose.Schema(
 
 assignmentSchema.index({ teacher: 1, subject: 1, classRef: 1, sessionYear: 1 }, { unique: true });
 
-module.exports = mongoose.model('Assignment', assignmentSchema);
+export default mongoose.model('Assignment', assignmentSchema);

@@ -1,4 +1,4 @@
-const AcademicCalendar = require('../models/calendarModel');
+import AcademicCalendar from '../models/calendarModel.js';
 
 const getEvents = async (req, res, next) => {
   try {
@@ -50,4 +50,4 @@ const deleteEvent = async (req, res, next) => {
   }
 };
 
-module.exports = { getEvents, createEvent, updateEvent, deleteEvent };
+export { getEvents, createEvent, updateEvent, deleteEvent };

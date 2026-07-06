@@ -1,16 +1,33 @@
-require('dotenv').config();
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const mongoSanitize = require('express-mongo-sanitize');
-const rateLimit = require('express-rate-limit');
-const path = require('path');
-const connectDB = require('./src/config/db');
-const { errorHandler } = require('./src/middlewares/errorMiddleware');
+import 'dotenv/config';
+import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import mongoSanitize from 'express-mongo-sanitize';
+import rateLimit from 'express-rate-limit';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import connectDB from './src/config/db.js';
+import { errorHandler } from './src/middlewares/errorMiddleware.js';
+
+import authRoutes from './src/routes/authRoutes.js';
+import departmentRoutes from './src/routes/departmentRoutes.js';
+import teacherRoutes from './src/routes/teacherRoutes.js';
+import subjectRoutes from './src/routes/subjectRoutes.js';
+import classRoutes from './src/routes/classRoutes.js';
+import roomRoutes from './src/routes/roomRoutes.js';
+import assignmentRoutes from './src/routes/assignmentRoutes.js';
+import timetableRoutes from './src/routes/timetableRoutes.js';
+import reportRoutes from './src/routes/reportRoutes.js';
+import calendarRoutes from './src/routes/calendarRoutes.js';
+import notificationRoutes from './src/routes/notificationRoutes.js';
+import settingRoutes from './src/routes/settingRoutes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Connect to Database
 connectDB();
@@ -64,18 +81,18 @@ app.use('/api', limiter);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
-app.use('/api/auth', require('./src/routes/authRoutes'));
-app.use('/api/departments', require('./src/routes/departmentRoutes'));
-app.use('/api/teachers', require('./src/routes/teacherRoutes'));
-app.use('/api/subjects', require('./src/routes/subjectRoutes'));
-app.use('/api/classes', require('./src/routes/classRoutes'));
-app.use('/api/rooms', require('./src/routes/roomRoutes'));
-app.use('/api/assignments', require('./src/routes/assignmentRoutes'));
-app.use('/api/timetables', require('./src/routes/timetableRoutes'));
-app.use('/api/reports', require('./src/routes/reportRoutes'));
-app.use('/api/calendar', require('./src/routes/calendarRoutes'));
-app.use('/api/notifications', require('./src/routes/notificationRoutes'));
-app.use('/api/settings', require('./src/routes/settingRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/departments', departmentRoutes);
+app.use('/api/teachers', teacherRoutes);
+app.use('/api/subjects', subjectRoutes);
+app.use('/api/classes', classRoutes);
+app.use('/api/rooms', roomRoutes);
+app.use('/api/assignments', assignmentRoutes);
+app.use('/api/timetables', timetableRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/calendar', calendarRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/settings', settingRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -91,4 +108,4 @@ server.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
 
-module.exports = { app, server, io };
+export { app, server, io };

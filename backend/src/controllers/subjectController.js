@@ -1,6 +1,6 @@
-const Subject = require('../models/subjectModel');
-const { importSubjectsFromExcel } = require('../services/importExportService');
-const fs = require('fs');
+import Subject from '../models/subjectModel.js';
+import { importSubjectsFromExcel } from '../services/importExportService.js';
+import fs from 'fs';
 
 const getSubjects = async (req, res, next) => {
   try {
@@ -114,4 +114,4 @@ const bulkUploadSubjects = async (req, res, next) => {
   }
 };
 
-module.exports = { getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, bulkUploadSubjects };
+export { getSubjects, getSubjectById, createSubject, updateSubject, deleteSubject, bulkUploadSubjects };

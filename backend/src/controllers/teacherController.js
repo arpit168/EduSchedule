@@ -1,7 +1,7 @@
-const Teacher = require('../models/teacherModel');
-const User = require('../models/userModel');
-const { importTeachersFromExcel } = require('../services/importExportService');
-const fs = require('fs');
+import Teacher from '../models/teacherModel.js';
+import User from '../models/userModel.js';
+import { importTeachersFromExcel } from '../services/importExportService.js';
+import fs from 'fs';
 
 const getTeachers = async (req, res, next) => {
   try {
@@ -128,4 +128,4 @@ const bulkUploadTeachers = async (req, res, next) => {
   }
 };
 
-module.exports = { getTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacher, bulkUploadTeachers };
+export { getTeachers, getTeacherById, createTeacher, updateTeacher, deleteTeacher, bulkUploadTeachers };

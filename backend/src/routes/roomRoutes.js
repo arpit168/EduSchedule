@@ -1,7 +1,7 @@
-const express = require('express');
-const { getRooms, getRoomById, createRoom, updateRoom, deleteRoom, bulkUploadRooms } = require('../controllers/roomController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
-const upload = require('../utils/upload');
+import express from 'express';
+import { getRooms, getRoomById, createRoom, updateRoom, deleteRoom, bulkUploadRooms } from '../controllers/roomController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
+import upload from '../utils/upload.js';
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.route('/:id')
   .put(protect, authorize('Admin'), updateRoom)
   .delete(protect, authorize('Admin'), deleteRoom);
 
-module.exports = router;
+export default router;

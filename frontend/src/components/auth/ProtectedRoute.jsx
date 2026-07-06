@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import useAuthStore from '../../store/useAuthStore';
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuthStore();
 
   if (isLoading) {
@@ -16,7 +16,7 @@ const ProtectedRoute = () => {
     );
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated ? (children ? children : <Outlet />) : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

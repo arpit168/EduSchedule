@@ -1,7 +1,7 @@
-const Department = require('../models/departmentModel');
-const Teacher = require('../models/teacherModel');
-const Subject = require('../models/subjectModel');
-const ClassModel = require('../models/classModel');
+import Department from '../models/departmentModel.js';
+import Teacher from '../models/teacherModel.js';
+import Subject from '../models/subjectModel.js';
+import ClassModel from '../models/classModel.js';
 
 const getDepartments = async (req, res, next) => {
   try {
@@ -73,4 +73,4 @@ const deleteDepartment = async (req, res, next) => {
   }
 };
 
-module.exports = { getDepartments, getDepartmentById, createDepartment, updateDepartment, deleteDepartment };
+export { getDepartments, getDepartmentById, createDepartment, updateDepartment, deleteDepartment };

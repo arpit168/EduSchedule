@@ -1,6 +1,6 @@
-const express = require('express');
-const { getAssignments, createAssignment, updateAssignment, deleteAssignment } = require('../controllers/assignmentController');
-const { protect, authorize } = require('../middlewares/authMiddleware');
+import express from 'express';
+import { getAssignments, createAssignment, updateAssignment, deleteAssignment } from '../controllers/assignmentController.js';
+import { protect, authorize } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, authorize('Admin', 'HOD'), updateAssignment)
   .delete(protect, authorize('Admin', 'HOD'), deleteAssignment);
 
-module.exports = router;
+export default router;

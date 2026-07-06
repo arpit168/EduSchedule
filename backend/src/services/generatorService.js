@@ -1,10 +1,10 @@
-const Timetable = require('../models/timetableModel');
-const Assignment = require('../models/assignmentModel');
-const ClassModel = require('../models/classModel');
-const Teacher = require('../models/teacherModel');
-const Room = require('../models/roomModel');
-const Setting = require('../models/settingModel');
-const { checkSlotConflicts } = require('./conflictService');
+import Timetable from '../models/timetableModel.js';
+import Assignment from '../models/assignmentModel.js';
+import ClassModel from '../models/classModel.js';
+import Teacher from '../models/teacherModel.js';
+import Room from '../models/roomModel.js';
+import Setting from '../models/settingModel.js';
+import { checkSlotConflicts } from './conflictService.js';
 
 /**
  * Enterprise Auto Timetable Generator Algorithm
@@ -192,4 +192,4 @@ const generateTimetable = async ({
   };
 };
 
-module.exports = { generateTimetable };
+export { generateTimetable };

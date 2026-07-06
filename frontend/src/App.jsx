@@ -88,37 +88,30 @@ function App() {
           />
 
           {/* Protected Dashboard Layout Routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <DashboardLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<DashboardPage />} />
-            <Route path="timetable" element={<TimetableBuilderPage />} />
-            <Route path="my-schedule" element={<TeacherViewPage />} />
-            <Route path="class-schedule" element={<ClassTimetablePage />} />
-            <Route path="reports" element={<ReportsPage />} />
-            <Route path="teachers" element={<TeachersPage />} />
-            <Route path="subjects" element={<SubjectsPage />} />
-            <Route path="classes" element={<ClassesPage />} />
-            <Route path="rooms" element={<RoomsPage />} />
-            <Route path="departments" element={<DepartmentsPage />} />
-            <Route path="assignments" element={<AssignmentsPage />} />
-            <Route path="calendar" element={<CalendarPage />} />
-            
-            <Route
-              path="settings"
-              element={
-                <RoleRoute allowedRoles={['Admin']}>
-                  <SettingsPage />
-                </RoleRoute>
-              }
-            />
-            
-            <Route path="profile" element={<ProfilePage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/timetable" element={<TimetableBuilderPage />} />
+              <Route path="/my-schedule" element={<TeacherViewPage />} />
+              <Route path="/my-timetable" element={<TeacherViewPage />} />
+              <Route path="/class-schedule" element={<ClassTimetablePage />} />
+              <Route path="/class-timetable" element={<ClassTimetablePage />} />
+              <Route path="/reports" element={<ReportsPage />} />
+              <Route path="/teachers" element={<TeachersPage />} />
+              <Route path="/subjects" element={<SubjectsPage />} />
+              <Route path="/classes" element={<ClassesPage />} />
+              <Route path="/rooms" element={<RoomsPage />} />
+              <Route path="/departments" element={<DepartmentsPage />} />
+              <Route path="/assignments" element={<AssignmentsPage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              
+              <Route element={<RoleRoute allowedRoles={['Admin']} />}>
+                <Route path="/settings" element={<SettingsPage />} />
+              </Route>
+              
+              <Route path="/profile" element={<ProfilePage />} />
+            </Route>
           </Route>
 
           {/* 404 Not Found & Fallback */}
