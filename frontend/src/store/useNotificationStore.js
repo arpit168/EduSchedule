@@ -4,7 +4,7 @@ import api from '../services/api';
 import socket from '../services/socket';
 import toast from 'react-hot-toast';
 
-const useNotificationStore = create((set, get) => ({
+const useNotificationStore = create((set) => ({
   notifications: [],
   unreadCount: 0,
   isLoading: false,
@@ -33,7 +33,7 @@ const useNotificationStore = create((set, get) => ({
         ),
         unreadCount: Math.max(0, state.unreadCount - 1),
       }));
-    } catch (error) {
+    } catch {
       toast.error('Failed to mark notification read');
     }
   },
@@ -46,7 +46,7 @@ const useNotificationStore = create((set, get) => ({
         unreadCount: 0,
       }));
       toast.success('Marked all notifications as read');
-    } catch (error) {
+    } catch {
       toast.error('Failed to mark notifications read');
     }
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
 import { GraduationCap, Plus, Edit2, Trash2, Search, Filter, Download, X } from 'lucide-react';
@@ -24,7 +24,7 @@ const ClassesPage = () => {
     department: '',
   });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       const [cRes, dRes] = await Promise.all([
@@ -39,11 +39,14 @@ const ClassesPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedDept, searchQuery]);
 
   useEffect(() => {
-    fetchData();
-  }, [selectedDept, searchQuery]);
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchData]);
 
   const handleOpenModal = (c = null) => {
     if (c) {

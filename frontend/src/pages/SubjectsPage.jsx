@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
 import { BookOpen, Plus, Edit2, Trash2, Search, Filter, Download, X } from 'lucide-react';
@@ -9,7 +9,6 @@ const SubjectsPage = () => {
   const { user } = useAuthStore();
   const [subjects, setSubjects] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [teachers, setTeachers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDept, setSelectedDept] = useState('all');
@@ -26,28 +25,30 @@ const SubjectsPage = () => {
     color: 'indigo',
   });
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    await Promise.resolve();
     setIsLoading(true);
     try {
-      const [sRes, dRes, tRes] = await Promise.all([
+      const [sRes, dRes] = await Promise.all([
         api.get(`/subjects?department=${selectedDept}&search=${encodeURIComponent(searchQuery)}`),
         api.get('/departments'),
-        api.get('/teachers'),
       ]);
       setSubjects(sRes.data.data || []);
       setDepartments(dRes.data.data || []);
-      setTeachers(tRes.data.data || []);
     } catch (error) {
       console.error('Error fetching subjects:', error);
       toast.error('Failed to load subjects');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedDept, searchQuery]);
 
   useEffect(() => {
-    fetchData();
-  }, [selectedDept, searchQuery]);
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchData]);
 
   const handleOpenModal = (s = null) => {
     if (s) {

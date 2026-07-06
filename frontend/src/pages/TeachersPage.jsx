@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
-import { Users, Plus, Edit2, Trash2, Search, Download, Upload, Filter, CheckCircle2, AlertCircle, X } from 'lucide-react';
+import { Users, Plus, Edit2, Trash2, Search, Download, Filter, X } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import toast from 'react-hot-toast';
 
@@ -29,7 +29,8 @@ const TeachersPage = () => {
     workingDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   });
 
-  const fetchTeachers = async () => {
+  const fetchTeachers = useCallback(async () => {
+    await Promise.resolve();
     setIsLoading(true);
     try {
       const [tRes, dRes] = await Promise.all([
@@ -44,11 +45,14 @@ const TeachersPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedDept, searchQuery]);
 
   useEffect(() => {
-    fetchTeachers();
-  }, [selectedDept, searchQuery]);
+    const timer = setTimeout(() => {
+      fetchTeachers();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchTeachers]);
 
   const handleOpenModal = (t = null) => {
     if (t) {
@@ -310,7 +314,7 @@ const TeachersPage = () => {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="anita@antigravity.edu"
+                    placeholder="anita@Learning.edu"
                     className="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white"
                   />
                 </div>

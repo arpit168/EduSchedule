@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
@@ -13,8 +13,6 @@ import {
   Clock,
   ArrowUpRight,
   Sparkles,
-  Layers,
-  PlusCircle,
   CalendarDays,
   Activity,
   ChevronRight,
@@ -32,8 +30,6 @@ import {
   Cell,
   AreaChart,
   Area,
-  LineChart,
-  Line,
   Legend,
 } from 'recharts';
 
@@ -44,24 +40,21 @@ const DashboardPage = () => {
   const [stats, setStats] = useState(null);
   const [workloadData, setWorkloadData] = useState([]);
   const [subjectData, setSubjectData] = useState([]);
-  const [roomData, setRoomData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       setIsLoading(true);
       try {
-        const [statsRes, workRes, subRes, roomRes] = await Promise.all([
+        const [statsRes, workRes, subRes] = await Promise.all([
           api.get('/reports/stats'),
           api.get('/reports/workload'),
           api.get('/reports/subjects'),
-          api.get('/reports/rooms'),
         ]);
 
         setStats(statsRes.data.stats);
         setWorkloadData(workRes.data.data ? workRes.data.data.slice(0, 8) : []);
         setSubjectData(subRes.data.byType || []);
-        setRoomData(roomRes.data.data ? roomRes.data.data.slice(0, 6) : []);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {

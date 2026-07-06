@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/useAuthStore';
 import useThemeStore from '../../store/useThemeStore';
@@ -16,7 +16,6 @@ import {
   CheckCircle2,
   X,
   Sparkles,
-  Layers,
 } from 'lucide-react';
 import api from '../../services/api';
 
@@ -39,10 +38,7 @@ const Navbar = () => {
 
   // Debounced search across teachers, classes, subjects, rooms
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults(null);
-      return;
-    }
+    if (!searchQuery.trim()) return;
 
     const timer = setTimeout(async () => {
       setIsSearching(true);
@@ -86,11 +82,21 @@ const Navbar = () => {
             type="text"
             placeholder="Search teachers, classes, rooms, subjects... (Ctrl+F)"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setSearchQuery(val);
+              if (!val.trim()) setSearchResults(null);
+            }}
             className="w-full pl-10 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder-slate-400 rounded-xl border border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none"
           />
           {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 text-slate-400 hover:text-slate-600">
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setSearchResults(null);
+              }}
+              className="absolute right-3 text-slate-400 hover:text-slate-600"
+            >
               <X size={16} />
             </button>
           )}

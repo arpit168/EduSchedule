@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Check, Trash2, BookOpen, User, Building2, Clock } from 'lucide-react';
 import api from '../../services/api';
 import useTimetableStore from '../../store/useTimetableStore';
@@ -16,10 +16,6 @@ const SlotEditModal = ({ isOpen, onClose, slotData, classInfo }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setSelectedSubject(slotData?.subject?._id || '');
-      setSelectedTeacher(slotData?.teacher?._id || '');
-      setSelectedRoom(slotData?.room?._id || '');
-
       // Load dropdown options
       const loadOptions = async () => {
         try {
@@ -31,6 +27,9 @@ const SlotEditModal = ({ isOpen, onClose, slotData, classInfo }) => {
           setSubjects(sRes.data.data || []);
           setTeachers(tRes.data.data || []);
           setRooms(rRes.data.data || []);
+          setSelectedSubject(slotData?.subject?._id || '');
+          setSelectedTeacher(slotData?.teacher?._id || '');
+          setSelectedRoom(slotData?.room?._id || '');
         } catch (error) {
           console.error('Error loading options:', error);
         }

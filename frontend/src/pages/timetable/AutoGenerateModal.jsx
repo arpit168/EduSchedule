@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Sparkles, Check, AlertCircle, Layers, GraduationCap } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Sparkles, AlertCircle, Layers, GraduationCap } from 'lucide-react';
 import api from '../../services/api';
 import useTimetableStore from '../../store/useTimetableStore';
 

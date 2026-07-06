@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
 import { Layers, Plus, Edit2, Trash2, Search, Download, X } from 'lucide-react';
@@ -19,7 +19,8 @@ const DepartmentsPage = () => {
     description: '',
   });
 
-  const fetchDepts = async () => {
+  const fetchDepts = useCallback(async () => {
+    await Promise.resolve();
     setIsLoading(true);
     try {
       const res = await api.get('/departments');
@@ -30,11 +31,14 @@ const DepartmentsPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchDepts();
-  }, []);
+    const timer = setTimeout(() => {
+      fetchDepts();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchDepts]);
 
   const handleOpenModal = (d = null) => {
     if (d) {

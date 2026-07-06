@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import useAuthStore from '../store/useAuthStore';
 import { Building2, Plus, Edit2, Trash2, Search, Download, X } from 'lucide-react';
@@ -21,7 +21,8 @@ const RoomsPage = () => {
     floor: '1st Floor',
   });
 
-  const fetchRooms = async () => {
+  const fetchRooms = useCallback(async () => {
+    await Promise.resolve();
     setIsLoading(true);
     try {
       const res = await api.get(`/rooms?search=${encodeURIComponent(searchQuery)}`);
@@ -32,11 +33,14 @@ const RoomsPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [searchQuery]);
 
   useEffect(() => {
-    fetchRooms();
-  }, [searchQuery]);
+    const timer = setTimeout(() => {
+      fetchRooms();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchRooms]);
 
   const handleOpenModal = (r = null) => {
     if (r) {

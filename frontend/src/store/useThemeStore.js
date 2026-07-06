@@ -12,6 +12,16 @@ const getInitialTheme = () => {
 const useThemeStore = create((set, get) => ({
   theme: getInitialTheme(),
 
+  initTheme: () => {
+    const current = get().theme;
+    const root = document.documentElement;
+    if (current === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  },
+
   setTheme: (newTheme) => {
     localStorage.setItem('timetable_theme', newTheme);
     const root = document.documentElement;

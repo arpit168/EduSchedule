@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import useAuthStore from './store/useAuthStore';
@@ -47,7 +47,7 @@ function App() {
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
           <p className="text-sm font-bold text-slate-600 dark:text-slate-400 animate-pulse">
-            Loading Antigravity Timetable OS...
+            Loading Learning Timetable OS...
           </p>
         </div>
       </div>
@@ -105,11 +105,11 @@ function App() {
               <Route path="/departments" element={<DepartmentsPage />} />
               <Route path="/assignments" element={<AssignmentsPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
-              
+
               <Route element={<RoleRoute allowedRoles={['Admin']} />}>
                 <Route path="/settings" element={<SettingsPage />} />
               </Route>
-              
+
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
           </Route>

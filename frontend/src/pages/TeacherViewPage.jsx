@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import useAuthStore from '../store/useAuthStore';
 import api from '../services/api';
-import { Clock, Calendar, Download, User, CheckCircle2, Sparkles, Building2, BookOpen } from 'lucide-react';
+import { Download } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -66,7 +66,7 @@ const TeacherViewPage = () => {
   const exportToPDF = () => {
     const doc = new jsPDF('l', 'mm', 'a4');
     doc.setFontSize(18);
-    doc.text(`Antigravity Timetable OS - Personal Schedule`, 14, 20);
+    doc.text(`Learning Timetable OS - Personal Schedule`, 14, 20);
     doc.setFontSize(12);
     doc.text(`Teacher: ${teacherInfo?.name} (${teacherInfo?.employeeId}) | Dept: ${teacherInfo?.department?.name || 'General'}`, 14, 28);
 
@@ -161,9 +161,8 @@ const TeacherViewPage = () => {
                 {PERIODS.map((p, idx) => (
                   <th
                     key={idx}
-                    className={`p-3 text-center min-w-[9rem] border-r border-slate-200/60 dark:border-slate-800/60 ${
-                      p === 'LUNCH' ? 'bg-amber-500/10 text-amber-600 min-w-[5rem]' : ''
-                    }`}
+                    className={`p-3 text-center min-w-[9rem] border-r border-slate-200/60 dark:border-slate-800/60 ${p === 'LUNCH' ? 'bg-amber-500/10 text-amber-600 min-w-[5rem]' : ''
+                      }`}
                   >
                     {p === 'LUNCH' ? 'LUNCH' : `Period ${p}`}
                   </th>
@@ -177,7 +176,7 @@ const TeacherViewPage = () => {
                     {day}
                   </td>
 
-                  {PERIODS.map((p, idx) => {
+                  {PERIODS.map((p) => {
                     if (p === 'LUNCH') {
                       return (
                         <td

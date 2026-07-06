@@ -12,7 +12,7 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Antigravity Timetable OS UI Exception:', error, errorInfo);
+    console.error('Learning Timetable OS UI Exception:', error, errorInfo);
     this.setState({ errorInfo });
   }
 

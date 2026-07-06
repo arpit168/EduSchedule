@@ -1,5 +1,4 @@
-import React from 'react';
-import { AlertTriangle, ShieldAlert, Check, X, ArrowRight } from 'lucide-react';
+import { AlertTriangle, ShieldAlert, X, Check } from 'lucide-react';
 import useTimetableStore from '../../store/useTimetableStore';
 
 const ConflictModal = () => {
