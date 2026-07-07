@@ -44,7 +44,9 @@ const generateTimetable = async ({
 
   const classes = await ClassModel.find(classQuery);
   if (classes.length === 0) {
-    throw new Error('No classes found matching the criteria for timetable generation.');
+    const error = new Error('No classes found matching your criteria. Please create classes or seed the database before running timetable auto-generation.');
+    error.statusCode = 404;
+    throw error;
   }
 
   let totalSlotsGenerated = 0;
